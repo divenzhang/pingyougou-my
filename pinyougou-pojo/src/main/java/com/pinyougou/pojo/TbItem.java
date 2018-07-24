@@ -1,16 +1,29 @@
 package com.pinyougou.pojo;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.solr.core.mapping.Dynamic;
+import org.springframework.data.solr.core.mapping.SolrDocument;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
+
+@SolrDocument(collection = "solr_core")
 public class TbItem implements Serializable{
+
+    @Id
+    @Field
     private Long id;
 
+    @Field("item_title")
     private String title;
 
     private String sellPoint;
-
+//    @Field("item_price")
     private BigDecimal price;
 
     private Integer stockCount;
@@ -19,6 +32,7 @@ public class TbItem implements Serializable{
 
     private String barcode;
 
+    @Field("item_image")
     private String image;
 
     private Long categoryid;
@@ -27,6 +41,7 @@ public class TbItem implements Serializable{
 
     private Date createTime;
 
+//    @Field("item_updateTime")
     private Date updateTime;
 
     private String itemSn;
@@ -37,6 +52,7 @@ public class TbItem implements Serializable{
 
     private String isDefault;
 
+    @Field("item_goodsid")
     private Long goodsId;
 
     private String sellerId;
@@ -45,11 +61,25 @@ public class TbItem implements Serializable{
 
     private String category;
 
+    @Field("item_brand")
     private String brand;
 
     private String spec;
 
+    @Field("item_seller")
     private String seller;
+
+    @Dynamic
+    @Field("item_spec_*")
+    private Map<String,String> specMap;
+
+    public Map<String, String> getSpecMap() {
+        return specMap;
+    }
+
+    public void setSpecMap(Map<String, String> specMap) {
+        this.specMap = specMap;
+    }
 
     public Long getId() {
         return id;
@@ -233,5 +263,34 @@ public class TbItem implements Serializable{
 
     public void setSeller(String seller) {
         this.seller = seller == null ? null : seller.trim();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("title", title)
+                .append("sellPoint", sellPoint)
+                .append("price", price)
+                .append("stockCount", stockCount)
+                .append("num", num)
+                .append("barcode", barcode)
+                .append("image", image)
+                .append("categoryid", categoryid)
+                .append("status", status)
+                .append("createTime", createTime)
+                .append("updateTime", updateTime)
+                .append("itemSn", itemSn)
+                .append("costPirce", costPirce)
+                .append("marketPrice", marketPrice)
+                .append("isDefault", isDefault)
+                .append("goodsId", goodsId)
+                .append("sellerId", sellerId)
+                .append("cartThumbnail", cartThumbnail)
+                .append("category", category)
+                .append("brand", brand)
+                .append("spec", spec)
+                .append("seller", seller)
+                .toString();
     }
 }
